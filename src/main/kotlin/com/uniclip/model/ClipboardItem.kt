@@ -1,6 +1,8 @@
 package com.uniclip.model
 
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcTypeCode
+import java.sql.Types
 import java.time.LocalDateTime
 
 @Entity
@@ -19,8 +21,7 @@ data class ClipboardItem(
     @Column(columnDefinition = "TEXT")
     val textContent: String? = null,
 
-    @Lob
-    @Column(columnDefinition = "BYTEA")
+    @JdbcTypeCode(Types.VARBINARY)
     val binaryContent: ByteArray? = null,
 
     @Column(nullable = false)

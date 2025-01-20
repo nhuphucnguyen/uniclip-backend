@@ -16,7 +16,7 @@ class ClipboardService(private val repository: ClipboardItemRepository) {
             deviceId = request.deviceId,
             type = request.type,
             textContent = request.textContent,
-            binaryContent = request.binaryContent
+            binaryContent = request.getBinaryContentAsBytes()
         )
         val savedItem = repository.save(item)
         return savedItem.toResponse()
