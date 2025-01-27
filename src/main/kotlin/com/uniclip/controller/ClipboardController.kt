@@ -26,4 +26,11 @@ class ClipboardController(private val service: ClipboardService) {
     fun getItems(): ResponseEntity<List<ClipboardItemResponse>> {
         return ResponseEntity.ok(service.getItems())
     }
+
+    @PutMapping("/{contentHash}/touch")
+    fun touchItem(@PathVariable contentHash: String): ResponseEntity<ClipboardItemResponse> {
+        return service.touchItem(contentHash)?.let {
+            ResponseEntity.ok(it)
+        } ?: ResponseEntity.notFound().build()
+    }
 }

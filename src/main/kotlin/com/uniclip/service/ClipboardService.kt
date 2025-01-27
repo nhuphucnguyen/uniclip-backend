@@ -12,11 +12,14 @@ import java.time.LocalDateTime
 class ClipboardService(private val repository: ClipboardItemRepository) {
 
     private fun calculateContentHash(type: ClipboardItem.ClipboardType, textContent: String?, binaryContent: ByteArray?): String {
-        return when (type) {
-            ClipboardItem.ClipboardType.TEXT -> "text-${textContent?.hashCode()}"
-            ClipboardItem.ClipboardType.IMAGE -> "image-${binaryContent?.contentHashCode()}"
-            else -> "unknown-${System.currentTimeMillis()}"
+        val messageDigest = java.security.MessageDigest.getInstance("SHA-256")
+        val content = when (type) {
+            ClipboardItem.ClipboardType.TEXT -> textContent?.toByteArray() ?: ByteArray(0)
+            ClipboardItem.ClipboardType.IMAGE -> binaryContent ?: ByteArray(0)
+            else -> ByteArray(0)
         }
+        val hashBytes = messageDigest.digest(content)
+        return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     @Transactional
@@ -42,6 +45,14 @@ class ClipboardService(private val repository: ClipboardItemRepository) {
         
         val savedItem = repository.save(item)
         return savedItem.toResponse()
+    }
+
+    @Transactional
+    fun touchItem(contentHash: String): ClipboardItemResponse? {
+        return repository.findByContentHash(contentHash)?.let { item ->
+            val updatedItem = item.copy(updatedAt = LocalDateTime.now())
+            repository.save(updatedItem).toResponse()
+        }
     }
 
     fun getLatestItem(): ClipboardItemResponse? {
