@@ -13,9 +13,6 @@ data class ClipboardItem(
     val id: Long = 0,
 
     @Column(nullable = false)
-    val deviceId: String,
-
-    @Column(nullable = false)
     val type: ClipboardType,
 
     @Column(columnDefinition = "TEXT")
@@ -23,6 +20,9 @@ data class ClipboardItem(
 
     @JdbcTypeCode(Types.VARBINARY)
     val binaryContent: ByteArray? = null,
+
+    @Column(nullable = false)
+    val contentHash: String,
 
     @Column(nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),

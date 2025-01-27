@@ -15,15 +15,15 @@ class ClipboardController(private val service: ClipboardService) {
         return ResponseEntity.ok(service.saveItem(request))
     }
 
-    @GetMapping("/latest/{deviceId}")
-    fun getLatestItem(@PathVariable deviceId: String): ResponseEntity<ClipboardItemResponse> {
-        return service.getLatestItem(deviceId)?.let {
+    @GetMapping("/latest")
+    fun getLatestItem(): ResponseEntity<ClipboardItemResponse> {
+        return service.getLatestItem()?.let {
             ResponseEntity.ok(it)
         } ?: ResponseEntity.notFound().build()
     }
 
-    @GetMapping("/device/{deviceId}")
-    fun getItemsByDevice(@PathVariable deviceId: String): ResponseEntity<List<ClipboardItemResponse>> {
-        return ResponseEntity.ok(service.getItemsByDevice(deviceId))
+    @GetMapping
+    fun getItems(): ResponseEntity<List<ClipboardItemResponse>> {
+        return ResponseEntity.ok(service.getItems())
     }
 }

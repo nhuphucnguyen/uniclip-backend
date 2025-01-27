@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 import java.util.Base64
 
 data class ClipboardItemRequest(
-    val deviceId: String,
     val type: ClipboardItem.ClipboardType,
     val textContent: String? = null,
     val binaryContent: String? = null // Now accepts base64 encoded string
@@ -16,10 +15,10 @@ data class ClipboardItemRequest(
 
 data class ClipboardItemResponse(
     val id: Long,
-    val deviceId: String,
     val type: ClipboardItem.ClipboardType,
     val textContent: String?,
     private val binaryContent: ByteArray?,
+    val contentHash: String,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 ) {
@@ -29,7 +28,7 @@ data class ClipboardItemResponse(
 
     // Don't include binaryContent in toString() to avoid large output
     override fun toString(): String {
-        return "ClipboardItemResponse(id=$id, deviceId='$deviceId', type=$type, " +
-               "textContent=$textContent, createdAt=$createdAt, updatedAt=$updatedAt)"
+        return "ClipboardItemResponse(id=$id, type=$type, " +
+               "textContent=$textContent, createdAt=$createdAt, updatedAt=$updatedAt, contentHash='$contentHash')"
     }
 }

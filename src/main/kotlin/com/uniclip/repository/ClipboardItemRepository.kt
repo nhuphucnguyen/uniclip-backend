@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ClipboardItemRepository : JpaRepository<ClipboardItem, Long> {
-    fun findFirstByDeviceIdOrderByCreatedAtDesc(deviceId: String): ClipboardItem?
-    fun findAllByDeviceIdOrderByCreatedAtDesc(deviceId: String): List<ClipboardItem>
+    fun findFirstByOrderByUpdatedAtDesc(): ClipboardItem?
+    fun findAllByOrderByUpdatedAtDesc(): List<ClipboardItem>
+    fun findByContentHash(contentHash: String): ClipboardItem?
 }
