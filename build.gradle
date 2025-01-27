@@ -17,6 +17,11 @@ java {
 	}
 }
 
+// Disable plain JAR generation
+jar {
+    enabled = false
+}
+
 repositories {
 	mavenCentral()
 }
